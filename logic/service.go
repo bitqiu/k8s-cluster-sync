@@ -16,7 +16,6 @@ func SyncService(sourceCli, targetCli *kubernetes.Clientset, namespace string) e
 	}
 
 	for _, source := range sourceList.Items {
-
 		targetService, err := targetCli.CoreV1().Services(namespace).Get(context.TODO(), source.Name, v1.GetOptions{})
 		if err != nil {
 			if kerrors.IsNotFound(err) {

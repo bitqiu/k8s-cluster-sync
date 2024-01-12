@@ -16,7 +16,6 @@ func SyncIngress(sourceCli, targetCli *kubernetes.Clientset, namespace string) e
 	}
 
 	for _, source := range sourceList.Items {
-		// 判断目标集群是否存在
 		target, err := targetCli.NetworkingV1().Ingresses(namespace).Get(context.TODO(), source.Name, v1.GetOptions{})
 		if err != nil {
 			if kerrors.IsNotFound(err) {

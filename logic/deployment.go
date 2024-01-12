@@ -16,8 +16,6 @@ func SyncDeployments(sourceCli, targetCli *kubernetes.Clientset, namespace strin
 	}
 
 	for _, source := range sourceList.Items {
-		fmt.Println(source.Name)
-
 		target, err := targetCli.AppsV1().Deployments(namespace).Get(context.TODO(), source.Name, v1.GetOptions{})
 
 		if err != nil {
