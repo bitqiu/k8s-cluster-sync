@@ -16,7 +16,7 @@ func SyncService(sourceCli, targetCli *kubernetes.Clientset, namespace string) e
 	}
 
 	for _, source := range sourceList.Items {
-		targetService, err := targetCli.CoreV1().Services(namespace).Get(context.TODO(), source.Name, v1.GetOptions{})
+		_, err := targetCli.CoreV1().Services(namespace).Get(context.TODO(), source.Name, v1.GetOptions{})
 		if err != nil {
 			if kerrors.IsNotFound(err) {
 				// 如果目标集群中不存在该 Service，则创建一个新的 Service
@@ -34,7 +34,7 @@ func SyncService(sourceCli, targetCli *kubernetes.Clientset, namespace string) e
 			continue
 		}
 		// 处理 svc
-		targetRes, err := targetCli.CoreV1().Services(namespace).Update(context.TODO(), targetService, v1.UpdateOptions{})
+		targetRes, err := targetCli.CoreV1().Services(namespace).Update(context.TODO(), &source, v1.UpdateOptions{})
 		if err != nil {
 			log.Printf("更新目标 service 失败 %s: %v", targetRes.Name, err)
 		} else {
